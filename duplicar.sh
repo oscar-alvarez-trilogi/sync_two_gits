@@ -1,6 +1,5 @@
-#echo "$@" #Descomentar per si es vol veure per terminal les instruccions
-set -x
-
+#echo "$@" 	#Descomentar per si es vol veure per terminal les instruccions
+#set -x		#Descomentar per veure les instruccions
 cd amz/
 git pull
 
@@ -59,7 +58,8 @@ elif [[ "$*" == *"git commit"* ]]; then
 	cd ../amz/ || exit 1
 	git pull
 	git add -A   # ensures deletions/renames are staged properly
-	git commit -m "[sync] $(printf "%s " "$@")"
+	msg="${@: -1}"   # last argument (works on bash)
+	git commit -m "[sync] $msg"
 
 else
 	"$@"
