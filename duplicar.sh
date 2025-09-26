@@ -61,6 +61,14 @@ elif [[ "$*" == *"git commit"* ]]; then
 	msg="${@: -1}"   # last argument (works on bash)
 	git commit -m "[sync] $msg"
 
+elif [[ "$*" == *"sync"* ]]; then
+	set -x
+	git pull
+	cd ../
+
+	SRC_DIR="$2"
+	DST_DIR="$3"
+	rsync -av --update --exclude=".git" "$SRC_DIR" "$DST_DIR"
 else
 	"$@"
 fi
