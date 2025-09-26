@@ -21,22 +21,46 @@ elif [[ "$*" == *"git add ."* ]]; then
 	cd ../*repo*/
 	git add .
 elif [[ "$*" == *"git commit"* ]]; then
+
 	echo "[Github] Aquest commit es nomes per GitHub"
-	cd ../*repo*/
-	FILES=$(git diff --name-only HEAD)
-	for file in $FILES; do
-		echo "$file"
-	  	mkdir -p "../amz/$(dirname "$file")"
-	  	cp "$file" "../amz/$file"
-	done
-	git add .
+	cd ../*repo*/ || exit 1
+
+	# Stage all local changes
+	git add -A
+
+	# Detect changes with status (Added, Modified, Deleted, Renamed, etc.)
+	FILES=$(git diff --name-status HEAD)
+
+	while IFS=$'\t' read -r status file newfile; do
+	    echo "$status $file $newfile"
+
+	    case "$status" in
+	        A|M) # Added or Modified
+	            mkdir -p "../amz/$(dirname "$file")"
+	            cp "$file" "../amz/$file"
+	            ;;
+	        D) # Deleted
+	            rm -f "../amz/$file"
+	            ;;
+	        R*) # Renamed (old -> new)
+	            rm -f "../amz/$file"
+	            mkdir -p "../amz/$(dirname "$newfile")"
+	            cp "$newfile" "../amz/$newfile"
+	            ;;
+	        *) # Catch-all (just in case)
+	            echo "Unhandled status: $status $file $newfile"
+	            ;;
+	    esac
+	done <<< "$FILES"
+
 	"$@" # commit dins repo github
-	# En aquest punt, ja s'han afegit els fitxers
-	cd ../amz/
+
+	# Sync into the amz repo
+	cd ../amz/ || exit 1
 	git pull
-	git add .
-	# El que es fara es fer-ho quan es fagi el push
+	git add -A   # ensures deletions/renames are staged properly
 	git commit -m "[sync] $(printf "%s " "$@")"
+
 else
 	"$@"
 fi
