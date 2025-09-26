@@ -1,5 +1,5 @@
 git clone {{URL_REPO_1}} amz
-git clone {{URL_REPO_1}} 
+git clone {{URL_REPO_2}} 
 cd amz/
 git checkout -t origin/pre
 echo "Creat el directori de amz i el repo-XXX de GitHub"
