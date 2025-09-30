@@ -8,14 +8,20 @@ cd "../amz/"
 
 if [[ "$*" == *"git push"* ]]; then
 	echo "[Github] Aquesta branca només es puja a GitHub"
-	echo "[AMAZON] I ara es puja a pre"
+	#echo "[AMAZON] I ara es puja a pre"
 	## Aqui caldrà fer un merge d'aquesta branca a "pre"
 	cd ../*repo*/	
-	"$@"
-	cd ../amz/	
-	git add .
-	git status
-	git push origin pre
+	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+	if [[ "$BRANCH" == "pre" ]]; then
+		"$@"
+		cd ../amz/	
+		git add .
+		git status
+		git push origin pre
+	else
+		"$@"
+	fi
+
 elif [[ "$*" == *"git add ."* ]]; then
 	cd ../*repo*/
 	git add .
@@ -33,39 +39,46 @@ elif [[ "$*" == *"git commit"* ]]; then
 	# Stage all local changes
 	git add -A
 
-	# Detect changes with status (Added, Modified, Deleted, Renamed, etc.)
-	FILES=$(git diff --name-status HEAD)
+	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+	if [[ "$BRANCH" == "pre" ]]; then
 
-	while IFS=$'\t' read -r status file newfile; do
-	    echo "$status $file $newfile"
+		# Detect changes with status (Added, Modified, Deleted, Renamed, etc.)
+		FILES=$(git diff --name-status HEAD)
 
-	    case "$status" in
-	        A|M) # Added or Modified
-	            mkdir -p "../amz/$(dirname "$file")"
-	            cp "$file" "../amz/$file"
-	            ;;
-	        D) # Deleted
-	            rm -f "../amz/$file"
-	            ;;
-	        R*) # Renamed (old -> new)
-	            rm -f "../amz/$file"
-	            mkdir -p "../amz/$(dirname "$newfile")"
-	            cp "$newfile" "../amz/$newfile"
-	            ;;
-	        *) # Catch-all (just in case)
-	            echo "Unhandled status: $status $file $newfile"
-	            ;;
-	    esac
-	done <<< "$FILES"
+		while IFS=$'\t' read -r status file newfile; do
+		    echo "$status $file $newfile"
 
-	"$@" # commit dins repo github
+		    case "$status" in
+		        A|M) # Added or Modified
+		            mkdir -p "../amz/$(dirname "$file")"
+		            cp "$file" "../amz/$file"
+		            ;;
+		        D) # Deleted
+		            rm -f "../amz/$file"
+		            ;;
+		        R*) # Renamed (old -> new)
+		            rm -f "../amz/$file"
+		            mkdir -p "../amz/$(dirname "$newfile")"
+		            cp "$newfile" "../amz/$newfile"
+		            ;;
+		        *) # Catch-all (just in case)
+		            echo "Unhandled status: $status $file $newfile"
+		            ;;
+		    esac
+		done <<< "$FILES"
 
-	# Sync into the amz repo
-	cd ../amz/ || exit 1
-	git pull
-	git add -A   # ensures deletions/renames are staged properly
-	msg="${@: -1}"   # last argument (works on bash)
-	git commit -m "[sync] $msg"
+		"$@" # commit dins repo github
+
+		# Sync into the amz repo
+		cd ../amz/ || exit 1
+		git pull
+		git add -A   # ensures deletions/renames are staged properly
+		msg="${@: -1}"   # last argument (works on bash)
+		git commit -m "[sync] $msg"
+
+	else
+		"$@" # commit dins repo github
+	fi
 
 elif [[ "$*" == *"sync"* ]]; then
 	set -x
@@ -75,6 +88,13 @@ elif [[ "$*" == *"sync"* ]]; then
 	SRC_DIR="$2"
 	DST_DIR="$3"
 	rsync -av --update --exclude=".git" "$SRC_DIR" "$DST_DIR"
+elif [[ "$*" == *"git status"* ]]; then
+	cd ../*repo*/
+	echo 'Git status del repo'
+	git status
+	cd ../amz
+	echo 'Git status de Amazon'
+	git status
 else
 	"$@"
 fi
