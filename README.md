@@ -31,3 +31,11 @@ repositori-xxx      (carpeta superior amb els dos repos)
 Afegir el link de AWS amb l'usuari i la contrasenya.
 #### 2. *git branch dins de repo-XXX*
 #### 3. Editar fitxers, creació, desenvolupar, etc.
+#### 4. Per publicar:
+> git commit -m 'missatge' 
+
+Això fa un git add de tots els canvis, sincronitza la carpeta amz amb les modificacions, fa un pull de amz i fa un commit dins del repo de amz.
+
+> git push origin branca_de_github
+
+Amb el commit ja fet ara el que es fa es pujar la branca al repo de GitHub i es fa push de la branca de pre a CodeCommit.
