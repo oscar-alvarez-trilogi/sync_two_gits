@@ -28,13 +28,13 @@ repositori-xxx      (carpeta superior amb els dos repos)
 ## Instruccions
 
 #### Iniciem els dos repositoris utilitzant el script de init_repo
-``./init_repo``
+>``./init_repo``
 
 #### Crea la carpeta repo-xxx i amz.
- `cd repo-xxx`
+>`cd repo-xxx`
 
 #### Fem la creació de la nova branca
-`git checkout -b branca_mostra`
+>`git checkout -b branca_mostra`
 
 #### Fer modificacions de fitxers, afegir carpetes, etc.
 
