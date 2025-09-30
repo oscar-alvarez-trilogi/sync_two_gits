@@ -7,6 +7,7 @@ cd ../*repo*/
 cd "../amz/"
 
 if [[ "$*" == *"git push"* ]]; then
+	#set -x
 	echo "[Github] Aquesta branca només es puja a GitHub"
 	#echo "[AMAZON] I ara es puja a pre"
 	## Aqui caldrà fer un merge d'aquesta branca a "pre"
@@ -19,6 +20,7 @@ if [[ "$*" == *"git push"* ]]; then
 		git status
 		git push origin pre
 	else
+		git pull origin $BRANCH
 		"$@"
 	fi
 
