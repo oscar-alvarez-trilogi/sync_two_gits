@@ -41,12 +41,12 @@ repositori-xxx      (carpeta superior amb els dos repos)
 ### A l'arrel de la carpeta ``repositori`` :
 
 #### Es fa el commit
-``./duplicar git commit -m 'missatge del commit'``
+>``./duplicar git commit -m 'missatge del commit'``
 #### Es publica la branca_mostra a GitHub
-``./duplicar git push origin branca_mostra``
+>``./duplicar git push origin branca_mostra``
 #### Es fa merge de branca_mostra al main de GitHub
-``./duplicar git merge branca_mostra``
+>``./duplicar git merge branca_mostra``
 #### Es torna fer commit ara amb el merge
-``./duplicar git commit -m 'missatge del commit merge'``
+>``./duplicar git commit -m 'missatge del commit merge'``
 #### Es publica la branca_mostra al main de GitHub i es copia el main de GitHub al pre del repositori de Amazon
-``./duplicar git push origin main``
+>``./duplicar git push origin main``
