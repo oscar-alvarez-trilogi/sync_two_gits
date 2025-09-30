@@ -27,11 +27,34 @@ repositori-xxx      (carpeta superior amb els dos repos)
 
 ## Instruccions
 
+``./init_repo``
+
+* Crea la carpeta repo-xxx i amz.
+
+* `cd repo-xxx`
+
+* `git checkout -b branca_mostra`
+
+* Fer modificacions de fitxers, afegir carpetes, etc.
+
+A l'arrel de la carpeta ``repositori`` :
+
+* ``./duplicar git commit -m 'missatge del commit'`` (es fa el commit)
+
+* ``./duplicar git push origin branca_mostra`` (es publica la branca_mostra a GitHub)
+
+* ``./duplicar git merge branca_mostra`` (Es fa merge de branca_mostra al main de GitHub)
+* ``./duplicar git commit -m 'missatge del commit merge'`` (Es torna fer commit ara amb el merge)
+* ``./duplicar git push origin main`` 
+(Es publica la branca_mostra al main de GitHub i es copia el main de GitHub al pre del repositori de Amazon)
+
+----
 #### 1. ``./init_repo``
 Afegir el link de AWS amb l'usuari i la contrasenya.
 #### 2. *git branch dins de repo-XXX*
 #### 3. Editar fitxers, creació, desenvolupar, etc.
 #### 4. Per publicar:
+
 > git commit -m 'missatge' 
 
 Això fa un git add de tots els canvis, sincronitza la carpeta amz amb les modificacions, fa un pull de amz i fa un commit dins del repo de amz.
