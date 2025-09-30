@@ -13,12 +13,12 @@ if [[ "$*" == *"git push"* ]]; then
 	## Aqui caldrà fer un merge d'aquesta branca a "pre"
 	cd ../*repo*/	
 	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-	if [[ "$BRANCH" == "pre" ]]; then
+	if [[ "$BRANCH" == "main" ]]; then
 		"$@"
 		cd ../amz/	
 		git add .
 		git status
-		git push origin pre
+		git push origin pre # amz pre
 	else
 		git pull origin $BRANCH
 		"$@"
@@ -30,11 +30,11 @@ elif [[ "$*" == *"git add ."* ]]; then
 elif [[ "$*" == *"git merge "* ]]; then
 	#set -x
 	cd ../*repo*/
-	git checkout pre
+	git checkout main # github main
 	"$@"
 
 elif [[ "$*" == *"git commit"* ]]; then
-
+	set -x
 	echo "[Github] Aquest commit es nomes per GitHub"
 	cd ../*repo*/ || exit 1
 
@@ -42,10 +42,11 @@ elif [[ "$*" == *"git commit"* ]]; then
 	git add -A
 
 	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-	if [[ "$BRANCH" == "pre" ]]; then
+	if [[ "$BRANCH" == "main" ]]; then
 
 		# Detect changes with status (Added, Modified, Deleted, Renamed, etc.)
-		FILES=$(git diff --name-status HEAD)
+		#FILES=$(git diff --name-status HEAD)
+		FILES=$(git diff --name-status HEAD~1 HEAD)
 
 		while IFS=$'\t' read -r status file newfile; do
 		    echo "$status $file $newfile"
@@ -72,7 +73,7 @@ elif [[ "$*" == *"git commit"* ]]; then
 		"$@" # commit dins repo github
 
 		# Sync into the amz repo
-		cd ../amz/ || exit 1
+		cd ../amz/
 		git pull
 		git add -A   # ensures deletions/renames are staged properly
 		msg="${@: -1}"   # last argument (works on bash)
