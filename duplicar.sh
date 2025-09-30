@@ -19,6 +19,12 @@ if [[ "$*" == *"git push"* ]]; then
 elif [[ "$*" == *"git add ."* ]]; then
 	cd ../*repo*/
 	git add .
+elif [[ "$*" == *"git merge "* ]]; then
+	#set -x
+	cd ../*repo*/
+	git checkout pre
+	"$@"
+
 elif [[ "$*" == *"git commit"* ]]; then
 
 	echo "[Github] Aquest commit es nomes per GitHub"
