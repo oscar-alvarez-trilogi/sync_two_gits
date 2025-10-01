@@ -85,6 +85,7 @@ elif [[ "$*" == *"git commit"* ]]; then
 
 elif [[ "$*" == *"sync"* ]]; then
 	set -x
+	cd ../amz/
 	git pull
 	cd ../
 
