@@ -87,11 +87,25 @@ elif [[ "$*" == *"sync"* ]]; then
 	set -x
 	cd ../amz/
 	git pull
-	cd ../
+	cd ..
 
 	SRC_DIR="$2"
 	DST_DIR="$3"
 	rsync -av --update --exclude=".git" "$SRC_DIR" "$DST_DIR"
+
+	#Ara farem els commmit dels canvis de repo que vinguin derivats de amz
+	cd *repo*/
+	
+	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+	if [[ "$BRANCH" == "main" ]]; then
+		git add -A
+		git commit -m "[sync] pre amz --> main github"
+		git push origin main
+	else
+		echo 'La branca del repo no es main!'
+		return
+	fi
+
 elif [[ "$*" == *"git status"* ]]; then
 	cd ../*repo*/
 	echo 'Git status del repo'
