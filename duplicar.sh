@@ -94,7 +94,7 @@ elif [[ "$*" == *"sync"* ]]; then
 
 	SRC_DIR="$2"
 	DST_DIR="$3"
-	rsync -av --update --exclude=".git" "$SRC_DIR" "$DST_DIR"
+	rsync -av --update --exclude=".git" --exclude-from='amz/.gitignore' "$SRC_DIR" "$DST_DIR"
 
 	#Ara farem els commmit dels canvis de repo que vinguin derivats de amz
 	cd *repo*/
