@@ -102,6 +102,7 @@ elif [[ "$*" == *"sync"* ]]; then
 	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 	if [[ "$BRANCH" == "main" ]]; then
 		git add -A
+		git pull origin main
 		git commit -m "[sync] pre amz --> main github"
 		git push origin main
 	else
