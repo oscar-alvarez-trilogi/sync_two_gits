@@ -27,15 +27,26 @@ repositori-xxx      (carpeta superior amb els dos repos)
 
 ## Instruccions
 
-#### 1. ``./init_repo``
-Afegir el link de AWS amb l'usuari i la contrasenya.
-#### 2. *git branch dins de repo-XXX*
-#### 3. Editar fitxers, creació, desenvolupar, etc.
-#### 4. Per publicar:
-> git commit -m 'missatge' 
+#### Iniciem els dos repositoris utilitzant el script de init_repo
+>``./init_repo``
 
-Això fa un git add de tots els canvis, sincronitza la carpeta amz amb les modificacions, fa un pull de amz i fa un commit dins del repo de amz.
+#### Crea la carpeta repo-xxx i amz.
+>`cd repo-xxx`
 
-> git push origin branca_de_github
+#### Fem la creació de la nova branca
+>`git checkout -b branca_mostra`
 
-Amb el commit ja fet ara el que es fa es pujar la branca al repo de GitHub i es fa push de la branca de pre a CodeCommit.
+#### Fer modificacions de fitxers, afegir carpetes, etc.
+
+### A l'arrel de la carpeta ``repositori`` :
+
+#### Es fa el commit
+>``./duplicar git commit -m 'missatge del commit'``
+#### Es publica la branca_mostra a GitHub
+>``./duplicar git push origin branca_mostra``
+#### Es fa merge de branca_mostra al main de GitHub
+>``./duplicar git merge branca_mostra``
+#### Es torna fer commit ara amb el merge
+>``./duplicar git commit -m 'missatge del commit merge'``
+#### Es publica la branca_mostra al main de GitHub i es copia el main de GitHub al pre del repositori de Amazon
+>``./duplicar git push origin main``
