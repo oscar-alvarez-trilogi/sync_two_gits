@@ -14,8 +14,11 @@ if [[ "$*" == *"git push"* ]]; then
 	cd ../*repo*/	
 	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 	if [[ "$BRANCH" == "main" ]]; then
+		git fetch
+		git pull origin main
 		"$@"
 		cd ../amz/	
+		git pull origin pre
 		git add .
 		git status
 		git push origin pre # amz pre
@@ -95,7 +98,7 @@ elif [[ "$*" == *"sync"* ]]; then
 
 	#Ara farem els commmit dels canvis de repo que vinguin derivats de amz
 	cd *repo*/
-	
+
 	BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 	if [[ "$BRANCH" == "main" ]]; then
 		git add -A
@@ -103,7 +106,7 @@ elif [[ "$*" == *"sync"* ]]; then
 		git push origin main
 	else
 		echo 'La branca del repo no es main!'
-		return
+		exit 0
 	fi
 
 elif [[ "$*" == *"git status"* ]]; then
@@ -114,5 +117,5 @@ elif [[ "$*" == *"git status"* ]]; then
 	echo 'Git status de Amazon'
 	git status
 else
-	"$@"
+	echo 'Instruccio no acceptada.'
 fi

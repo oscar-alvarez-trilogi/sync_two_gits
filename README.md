@@ -50,3 +50,5 @@ repositori-xxx      (carpeta superior amb els dos repos)
 >``./duplicar git commit -m 'missatge del commit merge'``
 #### Es publica la branca_mostra al main de GitHub i es copia el main de GitHub al pre del repositori de Amazon
 >``./duplicar git push origin main``
+#### Per últim, cal sincronitzar els dos repositoris (pre d'amazon cap a main de github)
+>``./duplicar.sh sync amz/ repo-243/``
